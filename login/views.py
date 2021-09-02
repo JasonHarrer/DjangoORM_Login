@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from login.models import *
 
@@ -12,3 +13,8 @@ def process_login(request):
 
 def process_register(request):
     pass
+
+def validate_email(request):
+    response = JsonResponse({ 
+                              'exists': (User.objects.filter(email=request.POST['email']).count() > 1)
+                            })

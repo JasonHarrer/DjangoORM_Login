@@ -6,6 +6,8 @@
         <title>Login/Register</title>
         {% load static %}
         <link rel="stylesheet" href="{% static 'css/index.css' %}">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+        <script src="{% static 'js/index.js' %}"></script>
     </head>
     <body>
         <div class="page-contents">
@@ -13,26 +15,35 @@
                 {% csrf_token %}
                 <h1>Registration</h1>
                 <div class="row">
-                    <label for="first_name">First Name</label>
-                    <input type="text" name="first_name" id="first_name">
+                    <label for="register_first_name">First Name</label>
+                    <input type="text" name="register_first_name" id="register_first_name"
+                           required minlength=2 maxlength=50>
+                    <p class="error" id="error_register_first_name"></p>
                 </div>
                 <div class="row">
-                    <label for="last_name">Last Name</label>
-                    <input type="text" name="last_name" id="last_name">
+                    <label for="register_last_name">Last Name</label>
+                    <input type="text" name="register_last_name" id="register_last_name"
+                           required minlength=2 maxlength=50>
+                    <p class="error" id="error_register_last_name"></p>
                 </div>
                 <div class="row">
-                    <label for="email">Email</label>
-                    <input type="email" name="email" id="email">
+                    <label for="register_email">Email</label>
+                    <input type="email" name="register_email" id="register_email"
+                           required minlength=5 maxlength=255>
+                    <p class="error" id="error_register_error"></p>
                 </div>
                 <div class="row">
-                    <label for="password1">Password</label>
-                    <input type="password" name="password1" id="password1">
+                    <label for="register_password1">Password</label>
+                    <input type="password" name="register_password1" id="register_password1"
+                           required minlength=8 maxlength=100>
                 </div>
                 <div class="row">
-                    <label for="password2">Confirm Password</label>
-                    <input type="password" name="password2" id="password2">
+                    <label for="register_password2">Confirm Password</label>
+                    <input type="password" name="register_password2" id="register_password2"
+                           required minlength=8 maxlength=100>
+                    <p class="error" id="error_register_passwords"></p>
                 </div>
-                <input type="submit" value="Register">
+                <input type="submit" id="register_submit" value="Register">
             </form>
             <form method="POST" action="/login/process">
                 <h1>Login</h1>
@@ -44,7 +55,7 @@
                     <label for="login-password">Password</label>
                     <input type="password" name="login-password" id="login-password">
                 </div>
-                <input type="submit" value="Login">
+                <input type="submit" id=value="Login" disabled=true>
             </form>
         </div>
     </body>
