@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="Login Registration assignment">
+        <title>Login/Register</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    </head>
+    <body>
+        <div class="page-contents">
+            <form method="POST" action="/register/process">
+                {% csrf_token %}
+                <h1>Registration</h1>
+                <div class="row">
+                    <label for="first_name">First Name</label>
+                    <input type="text" name="first_name" id="first_name">
+                </div>
+                <div class="row">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" name="last_name" id="last_name">
+                </div>
+                <div class="row">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email">
+                </div>
+                <div class="row">
+                    <label for="password1">Password</label>
+                    <input type="password" name="password1" id="password1">
+                </div>
+                <div class="row">
+                    <label for="password2">Confirm Password</label>
+                    <input type="password" name="password2" id="password2">
+                </div>
+                <input type="submit" value="Register">
+            </form>
+            <form method="POST" action="/login/process">
+                <h1>Login</h1>
+                <div class="row">
+                    <label for="login-email">Email</label>
+                    <input type="email" name="login-email" id="login-email">
+                </div>
+                <div class="row">
+                    <label for="login-password">Password</label>
+                    <input type="password" name="login-password" id="login-password">
+                </div>
+                <input type="submit" value="Login">
+            </form>
+        </div>
+    </body>
+</html>

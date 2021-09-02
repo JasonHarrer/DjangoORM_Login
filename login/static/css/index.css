@@ -1,0 +1,46 @@
+* {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.page-contents {
+    display: flex;
+    gap: 25rem;
+    margin: 2rem auto;
+    padding: 0 5rem;
+}
+
+form {
+    flex: 1;
+}
+
+h1 {
+    font-size: xxx-large;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.row {
+    display: flex;
+    margin: 1.5rem 3rem;
+}
+
+.row label {
+    flex: 1;
+}
+
+.row input {
+    border: solid 0.1rem black;
+    flex: 2;
+}
+
+input[type="submit"] {
+    border: solid 0.1rem black;
+    border-radius: 0.2rem;
+    box-shadow: 0.2rem 0.2rem darkgray;
+    display: block;
+    margin: 2rem auto;
+    padding: 0.5rem;
+    text-align: center;
+}
