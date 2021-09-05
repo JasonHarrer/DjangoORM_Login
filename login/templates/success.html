@@ -1,0 +1,26 @@
+<DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="Login Registration assignment">
+        <title>Welcome</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/success.css' %}">
+    </head>
+    <body>
+        <div id="contents">
+            <h1>Success!!, Welcome, {{user.first_name}}!</h1>
+            <h3>Successfully
+                {% if source == "register" %}
+                    registered
+                {% else %}
+                    logged in
+                {% endif %}
+                !!
+            </h3>
+        </div>
+        <div id="menu">
+            <a href="/logout">Log out</a>
+        </div>
+    </body>
+</html>

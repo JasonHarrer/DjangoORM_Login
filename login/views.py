@@ -31,8 +31,26 @@ def process_register(request):
                                                        ).decode()
                            )
         if user:
-            messages.success(request, f'{user.email} successfully registered.')
-        return redirect('/')
+            request.session['userid'] = user.id
+            request.session['source'] = request.POST['source']
+        return redirect('/success')
+
+
+def success(request):
+    context = {
+                'user':  User.objects.get(id=request.session['userid']),
+                'source': request.session['source']
+              }
+    return render(request, 'success.html', context)
+
+
+def logout(request):
+    try:
+        del request.session['userid']
+    except KeyError:
+        pass
+    return redirect('/')
+
 
 def validate_email(request, email):
     response = JsonResponse({ 

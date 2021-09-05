@@ -22,6 +22,7 @@
         <div class="page-contents">
             <form method="POST" action="/register/process">
                 {% csrf_token %}
+                <input type="hidden" name="source" value="register">
                 <h1>Registration</h1>
                 <div class="row">
                     <label for="register_first_name">First Name</label>
@@ -58,7 +59,9 @@
                 <input type="submit" id="register_submit" value="Register" disabled=true>
             </form>
             <form method="POST" action="/login/process">
+                {% csrf_token %}
                 <h1>Login</h1>
+                <input type="hidden" name="source" value="login">
                 <div class="row">
                     <label for="login-email">Email</label>
                     <input type="email" name="login-email" id="login-email">
