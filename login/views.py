@@ -1,5 +1,7 @@
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from bcrypt import hashpw, gensalt
+
 from login.models import *
 
 # Create your views here.
@@ -12,7 +14,22 @@ def process_login(request):
 
 
 def process_register(request):
-    pass
+    errors = User.objects.validate(request.POST)
+    if len(errors) > 0:
+        for error in errors.values():
+            messages.error(request, error)
+            return redirect('/')
+    else:
+        with request.POST as POST:
+            User.objects.create(
+                                 first_name = POST['registration_first_name'],
+                                 last_name  = POST['registration_last_name'],
+                                 email      = POST['registration_email'],
+                                 password   = hashpw(
+                                                      POST['password1'].encode(),
+                                                      gensalt()
+                                                    ).decode()
+                               )
 
 def validate_email(request):
     response = JsonResponse({ 

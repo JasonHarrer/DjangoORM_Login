@@ -10,6 +10,15 @@
         <script src="{% static 'js/index.js' %}"></script>
     </head>
     <body>
+        {% if messages %}
+            <ul>
+                {% for message in message %}
+                    <li {% if messages.tags %} class="{{message.tags}}" {% endif %}>
+                        {{message}}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         <div class="page-contents">
             <form method="POST" action="/register/process">
                 {% csrf_token %}
