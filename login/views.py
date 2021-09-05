@@ -47,6 +47,7 @@ def success(request):
 def logout(request):
     try:
         del request.session['userid']
+        del request.session['source']
     except KeyError:
         pass
     return redirect('/')
