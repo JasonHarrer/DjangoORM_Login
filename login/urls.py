@@ -5,5 +5,5 @@ urlpatterns = [
                 path('', index),
                 path('login/process', process_login),
                 path('register/process', process_register),
-                path('api/login/validate_email', validate_email)
+                path('api/login/validate_email/<str:email>', validate_email)
               ]

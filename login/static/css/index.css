@@ -46,5 +46,12 @@ input[type="submit"] {
 }
 
 .error {
+    color: red;
+    font-style: italic;
+    font-size: x-small;
+    margin: 0 1rem 0 10rem;
+}
+
+.error_start_hidden {
     display: none;
 }

@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from bcrypt import hashpw, gensalt
@@ -20,18 +21,21 @@ def process_register(request):
             messages.error(request, error)
             return redirect('/')
     else:
-        with request.POST as POST:
-            User.objects.create(
-                                 first_name = POST['registration_first_name'],
-                                 last_name  = POST['registration_last_name'],
-                                 email      = POST['registration_email'],
-                                 password   = hashpw(
-                                                      POST['password1'].encode(),
-                                                      gensalt()
-                                                    ).decode()
-                               )
+        user = User.objects.create(
+                                    first_name = request.POST['register_first_name'],
+                                    last_name  = request.POST['register_last_name'],
+                                    email      = request.POST['register_email'],
+                                    password   = hashpw(
+                                                         request.POST['register_password1'].encode(),
+                                                         gensalt()
+                                                       ).decode()
+                           )
+        if user:
+            messages.success(request, f'{user.email} successfully registered.')
+        return redirect('/')
 
-def validate_email(request):
+def validate_email(request, email):
     response = JsonResponse({ 
-                              'exists': (User.objects.filter(email=request.POST['email']).count() > 1)
+                              'exists': (User.objects.filter(email=email).count() > 1)
                             })
+    return response

@@ -27,32 +27,35 @@
                     <label for="register_first_name">First Name</label>
                     <input type="text" name="register_first_name" id="register_first_name"
                            required minlength=2 maxlength=50>
-                    <p class="error" id="error_register_first_name"></p>
                 </div>
+                <p class="error" id="error_register_first_name">First names must be between 2 and 50 characters long.</p>
                 <div class="row">
                     <label for="register_last_name">Last Name</label>
                     <input type="text" name="register_last_name" id="register_last_name"
                            required minlength=2 maxlength=50>
-                    <p class="error" id="error_register_last_name"></p>
                 </div>
+                <p class="error" id="error_register_last_name">Last names must be between 2 and 50 characters long.</p>
                 <div class="row">
                     <label for="register_email">Email</label>
                     <input type="email" name="register_email" id="register_email"
                            required minlength=5 maxlength=255>
-                    <p class="error" id="error_register_error"></p>
                 </div>
+                <p class="error" id="error_register_email">Email addresses must be more than 5 characters long and contain both an '@' symbol and a '.' symbol.</p>
+                <p class="error error_start_hidden" id="error_register_email_exists">An account using this email address already exists.  If this is yours, please log in instead.</p>
                 <div class="row">
                     <label for="register_password1">Password</label>
                     <input type="password" name="register_password1" id="register_password1"
                            required minlength=8 maxlength=100>
                 </div>
+                <p class="error" id="error_register_password1">Passwords must be at least 8 characters long.</p>
                 <div class="row">
                     <label for="register_password2">Confirm Password</label>
                     <input type="password" name="register_password2" id="register_password2"
                            required minlength=8 maxlength=100>
-                    <p class="error" id="error_register_passwords"></p>
                 </div>
-                <input type="submit" id="register_submit" value="Register">
+                <p class="error" id="error_register_password2">Passwords must be at least 8 characters long.</p>
+                <p class="error error_start_hidden" id="error_register_passwords">Passwords do not match.</p>
+                <input type="submit" id="register_submit" value="Register" disabled=true>
             </form>
             <form method="POST" action="/login/process">
                 <h1>Login</h1>
