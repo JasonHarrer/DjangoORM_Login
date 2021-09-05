@@ -2,3 +2,4 @@
 .environment/
 *.sqlite3
 *.pyc
+runserver

@@ -10,15 +10,6 @@
         <script src="{% static 'js/index.js' %}"></script>
     </head>
     <body>
-        {% if messages %}
-            <ul>
-                {% for message in message %}
-                    <li {% if messages.tags %} class="{{message.tags}}" {% endif %}>
-                        {{message}}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
         <div class="page-contents">
             <form method="POST" action="/register/process">
                 {% csrf_token %}
@@ -29,48 +20,71 @@
                     <input type="text" name="register_first_name" id="register_first_name"
                            required minlength=2 maxlength=50>
                 </div>
-                <p class="error" id="error_register_first_name">First names must be between 2 and 50 characters long.</p>
+                <p class="register_error" id="error_register_first_name">First names must be between 2 and 50 characters long.</p>
                 <div class="row">
                     <label for="register_last_name">Last Name</label>
                     <input type="text" name="register_last_name" id="register_last_name"
                            required minlength=2 maxlength=50>
                 </div>
-                <p class="error" id="error_register_last_name">Last names must be between 2 and 50 characters long.</p>
+                <p class="register_error" id="error_register_last_name">Last names must be between 2 and 50 characters long.</p>
                 <div class="row">
                     <label for="register_email">Email</label>
                     <input type="email" name="register_email" id="register_email"
                            required minlength=5 maxlength=255>
                 </div>
-                <p class="error" id="error_register_email">Email addresses must be more than 5 characters long and contain both an '@' symbol and a '.' symbol.</p>
-                <p class="error error_start_hidden" id="error_register_email_exists">An account using this email address already exists.  If this is yours, please log in instead.</p>
+                <p class="register_error" id="error_register_email">Email addresses must be more than 5 characters long and contain both an '@' symbol and a '.' symbol.</p>
+                <p class="register_error error_start_hidden" id="error_register_email_exists">An account using this email address already exists.  If this is yours, please log in instead.</p>
                 <div class="row">
                     <label for="register_password1">Password</label>
                     <input type="password" name="register_password1" id="register_password1"
                            required minlength=8 maxlength=100>
                 </div>
-                <p class="error" id="error_register_password1">Passwords must be at least 8 characters long.</p>
+                <p class="register_error" id="error_register_password1">Passwords must be at least 8 characters long.</p>
                 <div class="row">
                     <label for="register_password2">Confirm Password</label>
                     <input type="password" name="register_password2" id="register_password2"
                            required minlength=8 maxlength=100>
                 </div>
-                <p class="error" id="error_register_password2">Passwords must be at least 8 characters long.</p>
-                <p class="error error_start_hidden" id="error_register_passwords">Passwords do not match.</p>
+                <p class="register_error" id="error_register_password2">Passwords must be at least 8 characters long.</p>
+                <p class="register_error error_start_hidden" id="error_register_passwords">Passwords do not match.</p>
                 <input type="submit" id="register_submit" value="Register" disabled=true>
+                {% if source == "register" %}
+                    {% if messages %}
+                        <ul>
+                            {% for message in messages %}
+                                <li {% if message.tags %} class="{{message.tags}}" {% endif %}>
+                                    {{message}}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endif %}
             </form>
+            
             <form method="POST" action="/login/process">
                 {% csrf_token %}
                 <h1>Login</h1>
                 <input type="hidden" name="source" value="login">
                 <div class="row">
-                    <label for="login-email">Email</label>
-                    <input type="email" name="login-email" id="login-email">
+                    <label for="login_email">Email</label>
+                    <input type="email" name="login_email" id="login_email">
                 </div>
                 <div class="row">
-                    <label for="login-password">Password</label>
-                    <input type="password" name="login-password" id="login-password">
+                    <label for="login_password">Password</label>
+                    <input type="password" name="login_password" id="login_password">
                 </div>
-                <input type="submit" id=value="Login" disabled=true>
+                <input type="submit" name="login_submit" id="login_submit" value="Login" disabled=true>
+                {% if source == "login" %}
+                    {% if messages %}
+                        <ul>
+                            {% for message in messages %}
+                                <li {% if message.tags %} class="{{message.tags}}" {% endif %}>
+                                    {{message}}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endif %}
             </form>
         </div>
     </body>

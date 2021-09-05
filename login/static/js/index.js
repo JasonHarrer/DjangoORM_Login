@@ -4,6 +4,10 @@ $(document).ready(function() {
     $("#register_email").keyup(validate_register_form)
     $("#register_password1").keyup(validate_register_form)
     $("#register_password2").keyup(validate_register_form)
+    
+    $("#login_email").keyup(validate_login_form)
+    $("#login_password").keyup(validate_login_form)
+    
 })
 
 
@@ -31,6 +35,7 @@ async function validate_register_form() {
     if(okay) { console.log("okay = true");  $("#register_submit").attr("disabled", false) }
     else     { console.log("okay = false"); $("#register_submit").attr("disabled", true)  }
 }
+
 
 
 function validate_register_first_name() {
@@ -77,7 +82,10 @@ function validate_register_email() {
 
 
 async function validate_register_email_exists() {
-    response = await $.ajax('/api/login/validate_email/' + $('#register_email').val())
+    // If no e-mail address has been entered yet, just skip the rest of this function
+    if($("#register_email").val().length == 0) { return false }
+    
+    response = await $.ajax("/api/login/validate_email/" + $("#register_email").val())
     console.log(response)
     if(response.exists) {
         $("#error_register_email_exists").show()
@@ -139,4 +147,27 @@ function validate_register_passwords_match() {
            return true
         }
     }
+}
+
+async function validate_login_form() {
+    console.log("validate login form")
+    okay = true
+    if(!validate_login_email())    { console.log("validate_login_email failed"); okay = false }
+    if(!validate_login_password()) { console.log("validate_login_password_failed"); okay = false }
+    
+    if(okay) { console.log("login okay = true");  $("#login_submit").attr("disabled", false) }
+    else     { console.log("login okay = false"); $("#login_submit").attr("disabled", true)  } 
+}
+
+
+function validate_login_email() {
+    if($("#login_email").val().length < 5) { return false }
+    return true
+}
+
+
+function validate_login_password() {
+    if($("#login_password").val().length < 8) { return false }
+    return true
+    
 }

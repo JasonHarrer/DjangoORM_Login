@@ -1,20 +1,41 @@
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from bcrypt import hashpw, gensalt
+from bcrypt import hashpw, gensalt, checkpw
 
 from login.models import *
 
 # Create your views here.
 def index(request):
-    return render(request, 'index.html')
+    context = {
+                'source': request.session['source'] if 'source' in request.session else None
+              }
+    return render(request, 'index.html', context)
 
 
 def process_login(request):
-    pass
+    # Add source for login for messages checking
+    request.session['source'] = request.POST['source']
+    try:
+        user = User.objects.get(email=request.POST['login_email'])
+    except ObjectDoesNotExist:
+        print('ObjectDoesNotExist exception')
+        messages.error(request, 'Invalid Username and/or Password')
+        return redirect('/')
+    if checkpw(request.POST['login_password'].encode(), user.password.encode()):
+        print('email/password check successful')
+        request.session['userid'] = user.id
+        return redirect('/success')
+    else:
+        print('email/password check failed')
+        messages.error(request, 'Invalid Username and/or Password')
+        return redirect('/')
+        
 
 
 def process_register(request):
+    request.session['source'] = request.POST['source']
     errors = User.objects.validate(request.POST)
     if len(errors) > 0:
         for error in errors.values():
@@ -32,11 +53,17 @@ def process_register(request):
                            )
         if user:
             request.session['userid'] = user.id
-            request.session['source'] = request.POST['source']
         return redirect('/success')
 
 
 def success(request):
+    if 'userid' not in request.session:
+        raise PermissionDenied
+    
+    try:
+        user = User.objects.get(id=request.session['userid'])
+    except ObjectDoesNotExist:
+        raise PermissionDenied
     context = {
                 'user':  User.objects.get(id=request.session['userid']),
                 'source': request.session['source']
