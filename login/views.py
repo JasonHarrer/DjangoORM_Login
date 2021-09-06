@@ -3,13 +3,15 @@ from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from bcrypt import hashpw, gensalt, checkpw
+from datetime import date
 
 from login.models import *
 
 # Create your views here.
 def index(request):
     context = {
-                'source': request.session['source'] if 'source' in request.session else None
+                'source': request.session['source'] if 'source' in request.session else None,
+                'today':  date.today().isoformat()
               }
     return render(request, 'index.html', context)
 
@@ -45,6 +47,7 @@ def process_register(request):
         user = User.objects.create(
                                     first_name = request.POST['register_first_name'],
                                     last_name  = request.POST['register_last_name'],
+                                    birthdate  = request.POST['register_birthdate'],
                                     email      = request.POST['register_email'],
                                     password   = hashpw(
                                                          request.POST['register_password1'].encode(),

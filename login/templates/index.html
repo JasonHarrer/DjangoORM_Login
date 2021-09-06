@@ -28,6 +28,13 @@
                 </div>
                 <p class="register_error" id="error_register_last_name">Last names must be between 2 and 50 characters long.</p>
                 <div class="row">
+                    <label for="register_birthdate">Birth Date</label>
+                    <input type="date" name="register_birthdate" id="register_birthdate"
+                           required max="{{today}}">
+                </div>
+                <p class="register_error" id="error_register_birthdate_missing">Date of birth is required.</p>
+                <p class="register_error error_start_hidden" id="error_register_birthdate_future">Date of birth cannot be in the future.</p>
+                <div class="row">
                     <label for="register_email">Email</label>
                     <input type="email" name="register_email" id="register_email"
                            required minlength=5 maxlength=255>

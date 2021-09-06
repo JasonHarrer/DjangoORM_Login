@@ -1,6 +1,7 @@
 $(document).ready(function() {
     $("#register_first_name").keyup(validate_register_form)
     $("#register_last_name").keyup(validate_register_form)
+    $("#register_birthdate").keyup(validate_register_form)
     $("#register_email").keyup(validate_register_form)
     $("#register_password1").keyup(validate_register_form)
     $("#register_password2").keyup(validate_register_form)
@@ -18,6 +19,8 @@ async function validate_register_form() {
     if(!validate_register_first_name())      { okay = false }
     console.log("okay = " + okay)
     if(!validate_register_last_name())       { okay = false }
+    console.log("okay = " + okay)
+    if(!validate_register_birthdate())       { okay = false }
     console.log("okay = " + okay)
     if(!validate_register_email())           { okay = false }
     console.log("okay = " + okay)
@@ -65,6 +68,37 @@ function validate_register_last_name() {
         return true
     }
 }
+
+
+function validate_register_birthdate() {
+   // Need to fix this...
+    okay = true
+    
+    if ($("#register_birthdate").val().length < 10) {
+        $("#error_register_birthdate_missing").show()
+        console.log("validate birthdate failed: missing")
+        okay = false
+    } else {
+        console.log("validate birthday passed: not missing")
+        $("#error_register_birthdate_missing").hide()
+    }
+        
+    birthdate = new Date($("#register_birthdate").val())
+    console.log("birthdate: " + birthdate.toString())
+    today     = new Date()
+    console.log("today:     " + today.toString())
+    if (birthdate > today) {
+        $("#error_register_birthdate_future").show()
+        console.log("validate birthdate failed: future date")
+        okay = false
+    } else {
+        console.log("validate birthdate passed: not a future date")
+        $("#error_register_birthdate_future").hide()
+    }
+    
+    return okay
+}
+
 
 
 function validate_register_email() {
