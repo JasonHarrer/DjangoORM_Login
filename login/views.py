@@ -28,7 +28,7 @@ def process_login(request):
     if checkpw(request.POST['login_password'].encode(), user.password.encode()):
         print('email/password check successful')
         request.session['userid'] = user.id
-        return redirect('/success')
+        return redirect('/wall')
     else:
         print('email/password check failed')
         messages.error(request, 'Invalid Username and/or Password')
@@ -56,7 +56,7 @@ def process_register(request):
                            )
         if user:
             request.session['userid'] = user.id
-        return redirect('/success')
+        return redirect('/wall')
 
 
 def success(request):

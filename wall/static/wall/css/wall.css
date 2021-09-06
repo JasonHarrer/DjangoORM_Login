@@ -1,0 +1,99 @@
+* {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    color: #134E6F;
+}
+
+
+body {
+    background-color: #134E6F;
+}
+
+
+header {
+    display: flex;
+    background-color: #1AC0C6;
+    border-bottom: 0.2rem #EEE0E6;
+    border-radius: 0.5rem;
+    margin: 1rem;
+    margin-bottom: 0.2rem;
+    padding: 1rem;
+}
+
+header h1 {
+    flex: 8;
+    margin: auto 0;
+}
+
+header h3 {
+    flex: 2;
+    margin: auto 0;
+    text-align: center;
+}
+
+header a {
+    flex: 1;
+    margin: auto 0;
+}
+
+
+
+main {
+    background-color: #1AC0C6;
+    border-radius: 0.5rem;
+    margin: 0 1rem;
+    padding: 1rem 10rem;
+}
+
+
+.message_form {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+}
+
+.message_form label {
+    font-size:  large;
+    font-style: italic;
+}
+
+.message_form textarea {
+    height: 5rem;
+    margin: 1rem 0;
+}
+
+.message_form input[type=submit] {
+    background-color: #FFA822;
+    border: solid 0.1rem #FF6150;
+    border-radius: 0.2rem;
+    box-shadow: 0.2rem 0.2rem #DD4050;
+    font-style: italic;
+    font-weight: 600;
+    margin: 0 0 0 auto;
+    padding: 0.5rem 0.2rem;
+    width: 10rem;
+}
+
+
+
+
+.div_message {
+    margin: 2rem 0;
+}
+
+.message h3 {
+    display: block;
+}
+
+.div_message_text {
+    display: flex;
+}
+
+.message p {
+    flex: 8;
+}
+
+.message form {
+    flex: 2;
+}
