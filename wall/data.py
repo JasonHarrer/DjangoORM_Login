@@ -1,4 +1,3 @@
-from django.core import serializers
 from django.utils import timezone
 from datetime import timedelta
 from login.models import *
@@ -53,7 +52,6 @@ def message_delete(request):
 def comment_post(request):
     user = User.objects.get(id=request.session['userid'])
     message = Message.objects.get(id=request.POST['message_id'])
-
     comment = Comment.objects.create(
                                       message_id = message,
                                       user_id    = user,
@@ -61,7 +59,9 @@ def comment_post(request):
                                     )
     return {
              'success': True,
-             'id':      serialize('json', comment)
+             'author':  UserSerializer(instance=user).data,
+             'message': MessageSerializer(instance=message).data,
+             'comment': CommentSerializer(instance=comment).data
            }
 
 

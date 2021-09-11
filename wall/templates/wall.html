@@ -43,25 +43,27 @@
                         </div>
                         {% for key, comments in wall_comments.items %}
                             {% if key == message.id %}
-                                {% for comment in comments %}
-                                    <div class="div_comment" id="comment_{{comment.id}}">
-                                        <h5>
-                                            {{comment.user_id.first_name}}
-                                            {{comment.user_id.last_name}} -
-                                            {{comment.created_at}}
-                                        </h5>
-                                        <div class="div_comment_text">
-                                            <p>{{comment.text}}</p>
-                                            {% if user.id == comment.user_id.id %}
-                                                <form method=POST action="comment/delete" class="comment_delete_form">
-                                                    {% csrf_token %}
-                                                    <input type="hidden" name="comment_id" value="{{comment.id}}">
-                                                    <input type="submit" value="Delete">
-                                                </form>
-                                            {% endif %}
+                                <div class="div_comment_list" id="comments_for_message_{{message.id}}">
+                                    {% for comment in comments %}
+                                        <div class="div_comment" id="comment_{{comment.id}}">
+                                            <h5>
+                                                {{comment.user_id.first_name}}
+                                                {{comment.user_id.last_name}} -
+                                                {{comment.created_at}}
+                                            </h5>
+                                            <div class="div_comment_text">
+                                                <p>{{comment.text}}</p>
+                                                {% if user.id == comment.user_id.id %}
+                                                    <form method=POST action="comment/delete" class="comment_delete_form">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="comment_id" value="{{comment.id}}">
+                                                        <input type="submit" value="Delete">
+                                                    </form>
+                                                {% endif %}
+                                            </div>
                                         </div>
-                                    </div>
-                                {% endfor %}
+                                    {% endfor %}
+                                </div>
                             {% endif %}
                         {% endfor %}
                         <form method=POST action="comment/post" class="comment_post_form">

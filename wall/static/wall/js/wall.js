@@ -16,7 +16,7 @@ function on_message_post() {
                                 response.author.first_name + " " +
                                 response.author.last_name + " - " +
                                 response.message.created_at +
-                             "</h3>" +
+                             "</h3>\r\n" +
                              "<div class=\"div_message_text\" id=\"message_" + response.message.id + "\">\r\n" +
                                  "<p>" + response.message.text + "</p>\r\n" +
                                  "<form method=POST action=\"message/delete\" class=\"message_delete_form\">\r\n" +
@@ -41,25 +41,54 @@ function on_message_post() {
 function on_message_delete() {
     event.preventDefault()
     data = $(this).serialize()
-    response = $.post("/api/message/delete", data)
-    if(response.success) {
-        $("#message_" + data.message_id).remove()
-    }
-    console.log(response)
+    message_id = $(this).children("input[name=message_id]").val()
+    console.log("deleting message id #" + message_id)
+    csrf_token = $("input[name=csrfmiddlewaretoken]").first().val()
+    response = $.post("/api/message/delete", data).done(function(response) {
+        if(response.success) {
+            $("#message_" + message_id).remove()
+        }
+    })
 }
 
 
 function on_comment_post() {
     event.preventDefault()
     data = $(this).serialize()
-    response = $.post("/api/comment/post", data)
-    console.log(response)
+    csrf_token = $("input[name=csrfmiddlewaretoken]").first().val()
+    response = $.post("/api/comment/post", data).done(function(response) {
+        console.log(response)
+        if(response.success) {
+            console.log("Success!")
+            new_message = "<div class=\"div_comment\" id=\"comment_" + response.comment.id + "\"">\r\n" +
+                               "<h5>" +
+                                   response.author.first_name + " " +
+                                   response.author.last_name + " - " +
+                                   response.comment.created_at +
+                               "</h5>\r\n" +
+                               "<div class=\"div_comment_text\">\r\n" +
+                                   "<p>" + response.comment.text + "</p>\r\n" +
+                                   "<form method=POST action=\"comment/delete\" class=\"comment_delete_form\">\r\n" +
+                                       "<input type=\"hidden\" name=\"csrfmiddlewaretoken\" value=\"" + csrf_token + "\">\r\n" +
+                                       "<input type=\"hidden\" name=\"comment_id\" value=\"" + response.comment.id + "\">\r\n" +
+                                       "<input type=\"submit\" value=\"Delete\">\r\n" +
+                                   "</form>\r\n" +
+                               "</div>\r\n" +
+                           "</div>\r\n"
+            console.log(response.message.id)
+            $("#comments_for_message_" + response.message.id).append(new_message)
+        }
+    })
 }
 
 
 function on_comment_delete() {
     event.preventDefault()
     data = $(this).serialize()
-    response = $.post("/api/comment/delete", data)
-    console.log(response)
+    comment_id = $(this).children("input[name=comment_id]").val()
+    response = $.post("/api/comment/delete", data).done(function(response) {
+        if(response.success) {
+            $("#comment_" + comment_id).remove()
+        }
+    })
 }
