@@ -1,4 +1,6 @@
 from django.db import models
+from rest_framework import serializers
+
 from login.models import User
 
 # Create your models here.
@@ -15,3 +17,15 @@ class Comment(models.Model):
     text       = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = '__all__'
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'

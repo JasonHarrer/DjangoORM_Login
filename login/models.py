@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.dateparse import parse_date
+from rest_framework import serializers
 from datetime import date
 
 # Create your models here.
@@ -30,3 +31,9 @@ class User(models.Model):
     password   = models.CharField(max_length=100)
     birthdate  = models.DateField()
     objects    = UserManager()
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'

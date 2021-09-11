@@ -1,32 +1,46 @@
-from django.core.exceptions import PermissionDenied
+from django.contrib import messages
 from django.shortcuts import render, redirect
+
+from datetime import datetime
+
 from login.models import User
 from wall.models import Message, Comment
+from wall import data
 
 
 # Create your views here.
 def index(request):
-    data = {
-             'wall_messages': Message.objects.all().order_by('-created_at'),
-             'user':          User.objects.get(id=request.session['userid'])
-           }
-    return render(request, 'wall.html', data)
+    context = data.index(request)
+    print(context)
+    return render(request, 'wall.html', context)
 
 
 def message_post(request):
-    user = User.objects.get(id=request.session['userid'])
-    Message.objects.create(
-                            user_id = user,
-                            text    = request.POST['message_text']
-                          )
+    response = data.message_post(request)
+    print(response)
+    if not response['success']:
+        messages.error(request, response.error)
     return redirect('/wall')
 
 
 def message_delete(request):
-    message = Message.objects.get(id=request.POST['message_id'])
-    print(f'Message User ID: {message.user_id.id}\t\tLogged In User Id: {request.session["userid"]}')
-    if request.session['userid'] == message.user_id.id:
-        message.delete()
-        return redirect('/wall')
-    else:
-        raise PermissionDenied
+    response = data.message_delete(request)
+    print(response)
+    if not response['success']:
+        messages.error(request, response.error)
+    return redirect('/wall')
+
+
+def comment_post(request):
+    response = data.comment_post(request)
+    print(response)
+    if not response['success']:
+        messages.error(request, response.error)
+    return redirect('/wall')
+
+def comment_delete(request):
+    response = data.comment_delete(request)
+    print(response)
+    if not response['success']:
+        messages.error(request, response.error)
+    return redirect('/wall')

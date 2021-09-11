@@ -6,6 +6,8 @@
         <title>CodingDojo Wall</title>
         {% load static %}
         <link rel="stylesheet" href="{% static 'wall/css/wall.css' %}">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="{% static 'wall/js/wall.js' %}"></script>
     </head>
     <body>
         <header>
@@ -13,34 +15,65 @@
             <h3>Welcome, {{user.first_name}}</h3>
             <a href="/logout">Log off</a>
         </header>
-        <main id="page-contents">
-
-            <form method="POST" action="message/post" class="message_form">
+        <main>
+            <form method="POST" action="message/post" class="message_post_form">
                 {% csrf_token %}
                 <label for="message_text">Post a message</label>
                 <textarea id="message_text" name="message_text" required></textarea>
                 <input type="submit" id="message_submit" value="Post a message">
             </form>
 
-            {% for message in wall_messages %}
-                <div class="div_message">
-                    <h3>
-                        {{message.user_id.first_name}}
-                        {{message.user_id.last_name}} -
-                        {{message.created_at}}
-                    </h3>
-                    <div class="div_message_text">
-                        <p>{{message.text}}</p>
-                        {% if user.id == message.user_id.id %}
-                            <form method=POST action="message/delete" class="message_delete_form">
-                                {% csrf_token %}
-                                <input type="hidden" name="message_id" value="{{message.id}}">
-                                <input type="submit" value="Delete">
-                            </form>
-                        {% endif %}
+            <div id="div_message_list">
+                {% for message in wall_messages %}
+                    <div class="div_message">
+                        <h3>
+                            {{message.user_id.first_name}}
+                            {{message.user_id.last_name}} -
+                            {{message.created_at}}
+                        </h3>
+                        <div class="div_message_text" id="message_{{message.id}}">
+                            <p>{{message.text}}</p>
+                            {% if user.id == message.user_id.id and message.created_at >= delete_time %}
+                                <form method=POST action="message/delete" class="message_delete_form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="message_id" value="{{message.id}}">
+                                    <input type="submit" value="Delete">
+                                </form>
+                            {% endif %}
+                        </div>
+                        {% for key, comments in wall_comments.items %}
+                            {% if key == message.id %}
+                                {% for comment in comments %}
+                                    <div class="div_comment" id="comment_{{comment.id}}">
+                                        <h5>
+                                            {{comment.user_id.first_name}}
+                                            {{comment.user_id.last_name}} -
+                                            {{comment.created_at}}
+                                        </h5>
+                                        <div class="div_comment_text">
+                                            <p>{{comment.text}}</p>
+                                            {% if user.id == comment.user_id.id %}
+                                                <form method=POST action="comment/delete" class="comment_delete_form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="comment_id" value="{{comment.id}}">
+                                                    <input type="submit" value="Delete">
+                                                </form>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                        <form method=POST action="comment/post" class="comment_post_form">
+                            {% csrf_token %}
+                            <input type="hidden" name="message_id" value="{{message.id}}">
+                            <label for="comment_text">Post a comment</label>
+                            <textarea id="comment_text" name="comment_text" required></textarea>
+                            <input type="submit" id="comment_submit" value="Post a comment">
+                        </form>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </main>
     </body>
 </html>
